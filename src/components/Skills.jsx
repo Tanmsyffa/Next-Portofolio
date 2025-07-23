@@ -16,34 +16,6 @@ const Skills = ({ darkMode }) => {
     "/icons/mysql.png"
   ];
 
-  const skillCategories = [
-    {
-      title: "Bahasa Pemrograman",
-      items: [
-        { name: "HTML", icon: "/icons/html.png" },
-        { name: "JavaScript", icon: "/icons/js.png" },
-        { name: "Java", icon: "/icons/java.png" },
-        { name: "PHP", icon: "/icons/php.png" },
-      ]
-    },
-    {
-      title: "Library & Framework",
-      items: [
-        { name: "Bootstrap", icon: "/icons/bootstrap.png" },
-        { name: "React", icon: "/icons/react.png" },
-        { name: "Next.js", icon: "/icons/nextjs.svg" },
-        { name: "Tailwind CSS", icon: "/icons/tailwind.png" },
-        { name: "Node.js", icon: "/icons/node.png" },
-      ]
-    },
-    {
-      title: "Database",
-      items: [
-        { name: "MySQL", icon: "/icons/mysql.png" },
-      ]
-    }
-  ];
-
   const additionalExpertise = [
     {
       name: "Responsive Design",
@@ -141,7 +113,7 @@ const Skills = ({ darkMode }) => {
             </div>
 
             {/* Kanan: Keahlian Tambahan */}
-            <div className="p-8 md:p-10 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+            <div className="p-8 md:p-10 bg-gradient-to-br from-black-90 to-black-50 dark:black-900/20 dark:to-black/20">
               <h3 className={`text-2xl font-bold mb-6 pb-2 border-b-2 border-indigo-500 inline-block ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                 Keahlian Tambahan
               </h3>
