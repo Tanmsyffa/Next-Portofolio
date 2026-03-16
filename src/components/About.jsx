@@ -5,59 +5,19 @@ import { motion } from 'framer-motion';
 const About = ({ darkMode }) => {
   return (
     <section id="tentang" className="py-20">
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        {/* Bagian Gambar - Diperbaiki dengan efek modern */}
-        <div className="flex justify-center">
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className={`absolute -inset-4 rounded-2xl bg-indigo-500 opacity-10 blur-xl`}></div>
-            <div className={`relative rounded-xl overflow-hidden shadow-xl w-full max-w-md ${
-              darkMode ? 'bg-gray-800' : 'bg-white'
-            }`}>
-              {/* Glow effect */}
-              <div className={`absolute inset-0 rounded-xl ${
-                darkMode 
-                  ? 'bg-gradient-to-br from-indigo-900/20 to-purple-900/20' 
-                  : 'bg-gradient-to-br from-indigo-100/30 to-purple-100/30'
-              }`}></div>
-              
-              {/* Placeholder dengan animasi */}
-              <div className="relative z-10">
-                <div className="bg-gradient-to-r from-indigo-400 to-purple-500 w-full h-64 flex items-center justify-center">
-                  <motion.div 
-                    className="text-5xl font-bold text-white"
-                    animate={{ opacity: [0.8, 1, 0.8] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    😎
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Decorative elements */}
-            <div className={`absolute -bottom-4 -right-4 w-16 h-16 rounded-full ${
-              darkMode ? 'bg-indigo-600/30' : 'bg-indigo-300/50'
-            }`}></div>
-            <div className={`absolute -top-4 -left-4 w-10 h-10 rounded-full ${
-              darkMode ? 'bg-purple-600/30' : 'bg-purple-300/50'
-            }`}></div>
-          </motion.div>
-        </div>
+      <div className="flex justify-center">
+
         
         {/* Bagian Teks - Diperbaiki dengan tata letak lebih baik */}
         <motion.div
+          className="flex flex-col items-center text-center w-full max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="flex items-center mb-6">
-            <h2 className="text-3xl font-bold mr-4">Tentang Saya</h2>
-            <div className="w-16 h-1 bg-indigo-500 flex-grow"></div>
+          <div className="flex flex-col items-center mb-6">
+            <h2 className="text-3xl font-bold mb-3">Tentang Saya</h2>
+            <div className="w-16 h-1 bg-indigo-500"></div>
           </div>
           
           <motion.p 
@@ -82,7 +42,7 @@ const About = ({ darkMode }) => {
             inovatif dan efektif.
           </motion.p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
             {/* Pendidikan - Diperbaiki dengan card modern */}
             <motion.div 
               className={`p-5 rounded-xl ${
@@ -92,7 +52,7 @@ const About = ({ darkMode }) => {
               }`}
               whileHover={{ y: -5 }}
             >
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-3 justify-center">
                 <div className={`w-8 h-8 rounded-full mr-3 flex items-center justify-center ${
                   darkMode ? 'bg-indigo-900/50' : 'bg-indigo-100'
                 }`}>
@@ -104,8 +64,8 @@ const About = ({ darkMode }) => {
                 </div>
                 <h3 className="font-bold text-lg">Pendidikan</h3>
               </div>
-              <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Teknik Informatika</p>
-              <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Universitas Budi Luhur</p>
+              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Teknik Informatika</p>
+              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Universitas Budi Luhur</p>
             </motion.div>
             
             {/* Pengalaman - Diperbaiki dengan card modern */}
@@ -117,7 +77,7 @@ const About = ({ darkMode }) => {
               }`}
               whileHover={{ y: -5 }}
             >
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-3 justify-center">
                 <div className={`w-8 h-8 rounded-full mr-3 flex items-center justify-center ${
                   darkMode ? 'bg-purple-900/50' : 'bg-purple-100'
                 }`}>
@@ -127,7 +87,7 @@ const About = ({ darkMode }) => {
                 </div>
                 <h3 className="font-bold text-lg">Pengalaman</h3>
               </div>
-              <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Pengembangan website dan aplikasi android pada proyek kuliah</p>
+              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Pengembangan website dan aplikasi android pada proyek kuliah</p>
             </motion.div>
           </div>
         </motion.div>
