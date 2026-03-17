@@ -8,7 +8,7 @@ const About = ({ darkMode }) => {
       <div className="flex justify-center">
 
         
-        {/* Bagian Teks - Diperbaiki dengan tata letak lebih baik */}
+        {/* Bagian Teks */}
         <motion.div
           className="flex flex-col items-center text-center w-full max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ const About = ({ darkMode }) => {
           </motion.p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-            {/* Pendidikan - Diperbaiki dengan card modern */}
+            {/* Pendidikan */}
             <motion.div 
               className={`p-5 rounded-xl ${
                 darkMode 
@@ -68,7 +68,7 @@ const About = ({ darkMode }) => {
               <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Universitas Budi Luhur</p>
             </motion.div>
             
-            {/* Pengalaman - Diperbaiki dengan card modern */}
+            {/* Pengalaman */}
             <motion.div 
               className={`p-5 rounded-xl ${
                 darkMode 

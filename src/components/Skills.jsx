@@ -126,7 +126,6 @@ const Skills = ({ darkMode }) => {
           </p>
         </div>
 
-        {/* Kanan: Keahlian Tambahan */}
         <div className={`rounded-2xl p-8 flex flex-col border ${
           darkMode
             ? 'bg-gray-900/60 border-gray-700/60'
@@ -143,7 +142,6 @@ const Skills = ({ darkMode }) => {
 
           <div className="relative overflow-hidden rounded-xl" style={{ height: '320px' }}>
             <div className="flex flex-row h-full gap-3">
-              {/* Kolom 1 — scroll ke atas */}
               <div className="w-1/2 overflow-hidden">
                 <div
                   style={{
@@ -160,7 +158,6 @@ const Skills = ({ darkMode }) => {
                 </div>
               </div>
 
-              {/* Kolom 2 — scroll ke bawah */}
               <div className="w-1/2 overflow-hidden">
                 <div
                   style={{

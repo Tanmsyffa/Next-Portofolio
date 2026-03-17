@@ -100,7 +100,7 @@ const Footer = ({ darkMode }) => {
             : 'border-t border-gray-200 text-gray-400'
         }`}
       >
-        <p>© {currentYear} Sltnmsyffa.</p>
+        <p>© 2025 Sltnmsyffa.</p>
       </div>
     </footer>
   );

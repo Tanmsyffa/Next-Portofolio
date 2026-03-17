@@ -78,7 +78,7 @@ const Projects = ({ darkMode }) => {
 
             {/* Content */}
             <div className="relative">
-              {/* Icon + Title row */}
+              {/* Icon */}
               <div className="flex items-center gap-4 mb-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${project.iconBg(darkMode)}`}>
                   {project.icon}
