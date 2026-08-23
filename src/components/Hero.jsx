@@ -1,97 +1,177 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowRight, Mail, Github, Linkedin, MapPin } from "lucide-react";
+import { personalInfo } from "@/data/portfolioData";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
 
-const Hero = ({ darkMode }) => {
+export default function Hero() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
-    <section id="beranda" className="py-20 md:py-32">
-      <div className="grid md:grid-cols-2 gap-12 items-center">
+    <section id="beranda" className="pt-6 pb-12 sm:pt-14 sm:pb-24">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+        {/* Left Column: Text & Actions */}
+        <motion.div
+          className="md:col-span-7 flex flex-col items-start order-2 md:order-1"
+          variants={staggerContainer(0.08, 0.05)}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Subtitle / Role */}
+          <motion.p
+            variants={fadeUpVariant}
+            className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-2 sm:mb-3"
+          >
+            {personalInfo.role}
+          </motion.p>
 
-        {/* Teks */}
-        <div className="order-2 md:order-1">
-          {/* Badge */}
-          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-6 ${
-            darkMode
-              ? 'bg-indigo-900/40 text-indigo-400 border border-indigo-700/50'
-              : 'bg-indigo-50 text-indigo-500 border border-indigo-100'
-          }`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-            Web & Android Developer
-          </div>
+          {/* Main Headline */}
+          <motion.h1
+            variants={fadeUpVariant}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 sm:mb-5"
+          >
+            Membangun aplikasi web dan mobile yang fungsional, terstruktur, dan andal.
+          </motion.h1>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-            Halo, saya{' '}
-            <span className="text-indigo-500">Sultan</span>
-          </h1>
+          {/* Bio Description */}
+          <motion.p
+            variants={fadeUpVariant}
+            className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl mb-6 sm:mb-8"
+          >
+            Halo, saya <span className="font-semibold text-foreground">{personalInfo.name}</span>. Mahasiswa Teknik Informatika di Universitas Budi Luhur yang berfokus pada pengembangan web full-stack dan aplikasi native Android.
+          </motion.p>
 
-          <p className={`text-lg mb-8 max-w-lg leading-relaxed ${
-            darkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-            Ini adalah portofolio saya, tempat saya menampilkan proyek-proyek yang telah saya kerjakan.
-            Dibuat dengan{' '}
-            <span className="text-indigo-500 font-medium">Next.js</span> dan{' '}
-            <span className="text-indigo-500 font-medium">Tailwind CSS</span>.
-          </p>
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="#proyek"
-              scroll={false}
-              className="px-6 py-3 bg-indigo-500 text-white font-medium rounded-xl hover:bg-indigo-600 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25"
-            >
-              Lihat Proyek
+          {/* Primary Action Buttons */}
+          <motion.div
+            variants={fadeUpVariant}
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6 sm:mb-8 w-full sm:w-auto"
+          >
+            <Link href="#proyek" className="w-full sm:w-auto">
+              <button
+                type="button"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-opacity"
+              >
+                <span>Lihat Proyek</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </Link>
-            <Link
-              href="#kontak"
-              scroll={false}
-              className={`px-6 py-3 font-medium rounded-xl border transition-all duration-200 hover:-translate-y-0.5 ${
-                darkMode
-                  ? 'border-gray-700 hover:border-gray-500 hover:bg-gray-800/60 text-gray-300'
-                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
-              }`}
-            >
-              Kontak Saya
+
+            <Link href="#kontak" className="w-full sm:w-auto">
+              <button
+                type="button"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
+              >
+                <span>Hubungi Saya</span>
+              </button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Foto */}
-        <div className="order-1 md:order-2 flex justify-center">
-          <div className="relative">
-            {/* Glow */}
-            <div className="absolute -inset-6 rounded-full bg-indigo-500 opacity-10 blur-2xl"></div>
+          {/* Quick Social & Contact Badges */}
+          <motion.div
+            variants={fadeUpVariant}
+            className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-muted-foreground pt-4 border-t border-border w-full"
+          >
+            <a
+              href="https://github.com/Tanmsyffa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>GitHub</span>
+            </a>
+            <span className="text-border">•</span>
+            <a
+              href="https://www.linkedin.com/in/sultan-tammam-musyaffa-8a0a79280"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+            >
+              <Linkedin className="w-3.5 h-3.5" />
+              <span>LinkedIn</span>
+            </a>
+            <span className="text-border hidden sm:inline">•</span>
+            <a
+              href="mailto:sultantammam3@gmail.com"
+              className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors basis-full sm:basis-auto"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span className="truncate">sultantammam3@gmail.com</span>
+            </a>
+          </motion.div>
+        </motion.div>
 
-            {/* Decorative ring */}
-            <div className={`absolute -inset-3 rounded-full border-2 border-dashed opacity-30 ${
-              darkMode ? 'border-indigo-400' : 'border-indigo-400'
-            }`}></div>
-
-            {/* Profile image */}
-            <div className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl ${
-              darkMode ? 'border-gray-700' : 'border-white'
-            }`}>
+        {/* Right Column: Profile Photo Card with Premium 3D Tilt */}
+        <motion.div
+          className="md:col-span-5 flex justify-center md:justify-end order-1 md:order-2"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          style={{ perspective: 1000 }}
+        >
+          <motion.div 
+            className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[300px] rounded-2xl border border-border bg-card p-2.5 sm:p-3 shadow-sm"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <div 
+              className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-secondary"
+              style={{ transform: "translateZ(30px)" }}
+            >
               <Image
-                src="/images/profile.png"
-                alt="Profile"
-                width={320}
-                height={320}
-                className="w-full h-full object-cover"
+                src={personalInfo.profileImage}
+                alt={personalInfo.name}
+                fill
+                className="object-cover object-top filter grayscale hover:grayscale-0 transition-[filter] duration-500"
+                priority
+                sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, 300px"
               />
             </div>
-
-            {/* Floating badge bawah kanan */}
-            <div className={`absolute -bottom-2 -right-2 px-3 py-2 rounded-xl text-xs font-semibold shadow-lg ${
-              darkMode
-                ? 'bg-gray-800 border border-gray-700 text-gray-200'
-                : 'bg-white border border-gray-100 text-gray-700'
-            }`}>
-              <span className="text-indigo-500">✦</span> Open to Work
+            <div className="p-2.5 sm:p-3" style={{ transform: "translateZ(40px)" }}>
+              <p className="font-bold text-sm text-foreground">{personalInfo.name}</p>
+              <p className="text-xs text-muted-foreground mb-2">{personalInfo.role}</p>
+              <div className="flex items-center justify-between pt-2 border-t border-border text-[10px] sm:text-[11px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  <span>Jakarta, ID</span>
+                </span>
+                <span>Univ. Budi Luhur</span>
+              </div>
             </div>
-          </div>
-        </div>
-
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

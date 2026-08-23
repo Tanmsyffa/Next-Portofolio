@@ -1,65 +1,56 @@
-"use client";;
-import { cva } from "class-variance-authority";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import React, { useRef } from "react";
-
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const DEFAULT_SIZE = 40;
+const DEFAULT_SIZE = 44;
 const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 140;
 
-const dockVariants = cva(
-  "bg-white/80 dark:bg-gray-700/80 mt-2 flex h-[58px] w-max gap-2 rounded-2xl border p-2 backdrop-blur-md"
+const Dock = React.forwardRef(
+  (
+    {
+      className,
+      children,
+      iconSize = DEFAULT_SIZE,
+      iconMagnification = DEFAULT_MAGNIFICATION,
+      iconDistance = DEFAULT_DISTANCE,
+      ...props
+    },
+    ref
+  ) => {
+    const mouseX = useMotionValue(Infinity);
+
+    const renderChildren = () => {
+      return React.Children.map(children, (child) => {
+        if (React.isValidElement(child) && child.type === DockIcon) {
+          return React.cloneElement(child, {
+            ...child.props,
+            mouseX,
+            size: iconSize,
+            magnification: iconMagnification,
+            distance: iconDistance,
+          });
+        }
+        return child;
+      });
+    };
+
+    return (
+      <motion.div
+        ref={ref}
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        {...props}
+        className={cn(
+          "flex h-[64px] items-center gap-3 rounded-2xl border border-white/[0.08] bg-card/60 px-4 py-2 backdrop-blur-xl shadow-xl shadow-black/10",
+          className
+        )}
+      >
+        {renderChildren()}
+      </motion.div>
+    );
+  }
 );
-
-const Dock = React.forwardRef((
-  {
-    className,
-    children,
-    iconSize = DEFAULT_SIZE,
-    iconMagnification = DEFAULT_MAGNIFICATION,
-    iconDistance = DEFAULT_DISTANCE,
-    direction = "middle",
-    ...props
-  },
-  ref,
-) => {
-  const mouseX = useMotionValue(Infinity);
-
-  const renderChildren = () => {
-    return React.Children.map(children, (child) => {
-      if (
-        React.isValidElement(child) &&
-        child.type === DockIcon
-      ) {
-        return React.cloneElement(child, {
-          ...child.props,
-          mouseX: mouseX,
-          size: iconSize,
-          magnification: iconMagnification,
-          distance: iconDistance,
-        });
-      }
-      return child;
-    });
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={(e) => mouseX.set(e.pageX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      {...props}
-      className={cn(dockVariants({ className }), {
-        "items-start": direction === "top",
-        "items-center": direction === "middle",
-        "items-end": direction === "bottom",
-      })}>
-      {renderChildren()}
-    </motion.div>
-  );
-});
 
 Dock.displayName = "Dock";
 
@@ -81,7 +72,11 @@ const DockIcon = ({
     return val - bounds.x - bounds.width / 2;
   });
 
-  const sizeTransform = useTransform(distanceCalc, [-distance, 0, distance], [size, magnification, size]);
+  const sizeTransform = useTransform(
+    distanceCalc,
+    [-distance, 0, distance],
+    [size, magnification, size]
+  );
 
   const scaleSize = useSpring(sizeTransform, {
     mass: 0.1,
@@ -94,10 +89,11 @@ const DockIcon = ({
       ref={ref}
       style={{ width: scaleSize, height: scaleSize, padding }}
       className={cn(
-        "flex aspect-square cursor-pointer items-center justify-center rounded-full",
+        "flex aspect-square cursor-pointer items-center justify-center rounded-xl bg-secondary/60 hover:bg-primary/20 border border-white/[0.06] transition-colors",
         className
       )}
-      {...props}>
+      {...props}
+    >
       {children}
     </motion.div>
   );
@@ -105,4 +101,4 @@ const DockIcon = ({
 
 DockIcon.displayName = "DockIcon";
 
-export { Dock, DockIcon, dockVariants };
+export { Dock, DockIcon };

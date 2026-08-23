@@ -1,108 +1,211 @@
-import React from "react";
-import { Dock, DockIcon } from "./magicui/dock";
-const linkedinIcon = "/iconsContact/linkedin.png";
-const instagramIcon = "/iconsContact/instagram.png";
-const githubIcon = "/iconsContact/github.png";
+import React, { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Mail, Phone, Copy, Check, ArrowUpRight, MessageCircle } from "lucide-react";
+import { personalInfo } from "@/data/portfolioData";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
 
-const Contact = ({ darkMode }) => {
+export default function Contact() {
+  const [copiedType, setCopiedType] = useState(null);
+
+  const handleCopy = async (text, type) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedType(type);
+      setTimeout(() => setCopiedType(null), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setCopiedType(type);
+      setTimeout(() => setCopiedType(null), 2000);
+    }
+  };
+
+  const email = personalInfo.contact.email;
+  const phone = personalInfo.contact.phone;
+  const phoneDisplay = personalInfo.contact.phoneDisplay;
+  const waUrl = "https://wa.me/6287721669168";
+
   return (
-    <section id="kontak" className="py-20">
-      {/* Header */}
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold mb-3">Hubungi Saya</h2>
-        <div className="w-16 h-1 bg-indigo-500 mx-auto mb-8"></div>
-        <p
-          className={`max-w-2xl mx-auto text-lg ${
-            darkMode ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          Saya selalu terbuka untuk diskusi dan kolaborasi. Jangan ragu untuk
-          menghubungi saya melalui kontak di bawah ini.
-        </p>
-      </div>
+    <section id="kontak" className="py-16 sm:py-20 border-t border-border">
+      <motion.div
+        className="max-w-5xl mx-auto"
+        variants={staggerContainer(0.08, 0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+      >
+        {/* Header */}
+        <motion.div variants={fadeUpVariant} className="mb-10 sm:mb-12">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            Kontak
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            Hubungi saya secara langsung
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2 max-w-lg">
+            Terbuka untuk peluang kerja freelance, magang, full-time, maupun diskusi seputar proyek digital.
+          </p>
+        </motion.div>
 
-      {/* Contact Cards */}
-      <div className="flex flex-col items-center gap-6 max-w-lg mx-auto">
-
-        {/* Phone */}
-        <a
-          href="tel:+6287721669168"
-          className={`group flex items-center gap-5 w-full px-7 py-5 rounded-2xl transition-all duration-300 ${
-            darkMode
-              ? "bg-gray-800/60 border border-gray-700 hover:border-indigo-500/50 hover:bg-gray-800"
-              : "bg-white border border-gray-100 shadow-sm hover:border-indigo-300 hover:shadow-md"
-          }`}
-        >
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-            darkMode ? "bg-indigo-900/50 group-hover:bg-indigo-900" : "bg-indigo-50 group-hover:bg-indigo-100"
-          }`}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-          </div>
-          <div>
-            <p className={`text-xs font-semibold uppercase tracking-widest mb-0.5 ${darkMode ? "text-indigo-400" : "text-indigo-500"}`}>No. HP</p>
-            <p className={`font-medium ${darkMode ? "text-gray-200" : "text-gray-700"}`}>+(62) 877-2166-9168</p>
-          </div>
-          <svg className={`ml-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? "text-indigo-400" : "text-indigo-500"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-
-        {/* Email */}
-        <a
-          href="mailto:sultantammam3@gmail.com"
-          className={`group flex items-center gap-5 w-full px-7 py-5 rounded-2xl transition-all duration-300 ${
-            darkMode
-              ? "bg-gray-800/60 border border-gray-700 hover:border-indigo-500/50 hover:bg-gray-800"
-              : "bg-white border border-gray-100 shadow-sm hover:border-indigo-300 hover:shadow-md"
-          }`}
-        >
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-            darkMode ? "bg-indigo-900/50 group-hover:bg-indigo-900" : "bg-indigo-50 group-hover:bg-indigo-100"
-          }`}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <div>
-            <p className={`text-xs font-semibold uppercase tracking-widest mb-0.5 ${darkMode ? "text-indigo-400" : "text-indigo-500"}`}>Email</p>
-            <p className={`font-medium ${darkMode ? "text-gray-200" : "text-gray-700"}`}>sultantammam3@gmail.com</p>
-          </div>
-          <svg className={`ml-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${darkMode ? "text-indigo-400" : "text-indigo-500"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-
-        {/* Social Media */}
-        <div className={`w-full px-7 py-6 rounded-2xl ${
-          darkMode
-            ? "bg-gray-800/60 border border-gray-700"
-            : "bg-white border border-gray-100 shadow-sm"
-        }`}>
-          <p className={`text-xs font-semibold uppercase tracking-widest mb-5 ${darkMode ? "text-indigo-400" : "text-indigo-500"}`}>Temukan Saya Di</p>
-          <Dock className="mx-0 justify-start">
-            <DockIcon>
-              <a href="https://github.com/Tanmsyffa" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <img src={githubIcon} alt="GitHub" className="w-8 h-8 hover:opacity-80 transition-opacity" />
+        {/* Primary Contact Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
+          {/* Direct Email Card */}
+          <motion.div
+            variants={fadeUpVariant}
+            className="rounded-xl border border-border bg-card p-6 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Email
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-foreground">
+                  <Mail className="w-4 h-4" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mb-1">Kirim pesan langsung ke:</p>
+              <a
+                href={`mailto:${email}`}
+                className="text-base font-bold text-foreground hover:underline break-all block mb-4"
+              >
+                {email}
               </a>
-            </DockIcon>
-            <DockIcon>
-              <a href="https://instagram.com/tanmsyffa_" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <img src={instagramIcon} alt="Instagram" className="w-8 h-8 hover:opacity-80 transition-opacity" />
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-4 border-t border-border">
+              <a
+                href={`mailto:${email}`}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-foreground text-background text-xs font-semibold hover:opacity-90 transition-opacity"
+              >
+                <span>Buka Aplikasi Email</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
-            </DockIcon>
-            <DockIcon>
-              <a href="https://www.linkedin.com/in/sultan-tammam-musyaffa-8a0a79280?" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <img src={linkedinIcon} alt="LinkedIn" className="w-8 h-8 hover:opacity-80 transition-opacity" />
+              <button
+                type="button"
+                onClick={() => handleCopy(email, "email")}
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-border text-xs font-medium text-foreground hover:bg-secondary transition-colors"
+                title="Salin Alamat Email"
+              >
+                {copiedType === "email" ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-emerald-500 font-semibold">Tersalin</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Salin</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Direct WhatsApp / Phone Card */}
+          <motion.div
+            variants={fadeUpVariant}
+            className="rounded-xl border border-border bg-card p-6 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  WhatsApp &amp; Telepon
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-foreground">
+                  <Phone className="w-4 h-4" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mb-1">Nomor kontak aktif:</p>
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-bold text-foreground hover:underline block mb-4"
+              >
+                {phoneDisplay}
               </a>
-            </DockIcon>
-          </Dock>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-4 border-t border-border">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors"
+              >
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Chat di WhatsApp</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <button
+                type="button"
+                onClick={() => handleCopy(phone, "phone")}
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-border text-xs font-medium text-foreground hover:bg-secondary transition-colors"
+                title="Salin Nomor Telepon"
+              >
+                {copiedType === "phone" ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-emerald-500 font-semibold">Tersalin</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Salin</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
         </div>
 
-      </div>
+        {/* Social Links Network Bar */}
+        <motion.div
+          variants={fadeUpVariant}
+          className="rounded-xl border border-border bg-card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-foreground mb-1">
+              Profil &amp; Media Sosial
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Jelajahi aktivitas kode dan koneksi profesional saya.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            {personalInfo.socials.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-secondary hover:bg-foreground hover:text-background text-foreground text-xs font-medium border border-border transition-colors flex-1 sm:flex-initial justify-center"
+              >
+                <div className="w-4 h-4 relative shrink-0">
+                  <Image
+                    src={social.icon}
+                    alt={social.name}
+                    fill
+                    className="object-contain dark:invert"
+                    sizes="16px"
+                  />
+                </div>
+                <span>{social.name}</span>
+                <ArrowUpRight className="w-3 h-3 text-muted-foreground" />
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
-};
-
-export default Contact;
+}

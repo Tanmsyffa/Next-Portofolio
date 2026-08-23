@@ -1,199 +1,129 @@
-import React from 'react';
-import { IconCloud } from "@/components/magicui/icon-cloud";
-import { cn } from "@/lib/utils";
+import React from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { skillCategories, additionalExpertise } from "@/data/portfolioData";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
 
-const Skills = ({ darkMode }) => {
-  const iconCloudImages = [
-    "/icons/html.png",
-    "/icons/js.png",
-    "/icons/java.png",
-    "/icons/php.png",
-    "/icons/bootstrap.png",
-    "/icons/react.png",
-    "/icons/nextjs.svg",
-    "/icons/tailwind.png",
-    "/icons/node.png",
-    "/icons/mysql.png"
-  ];
-
-  const additionalExpertise = [
-    {
-      name: "Responsive Design",
-      description: "Mendesain website yang adaptif di semua perangkat",
-      icon: "📱",
-      color: "#6366F1"
-    },
-    {
-      name: "Version Control (Git)",
-      description: "Mengelola kode dengan Git & GitHub",
-      icon: "🔧",
-      color: "#8B5CF6"
-    },
-    {
-      name: "Testing & Debugging",
-      description: "Memastikan kualitas kode dengan testing",
-      icon: "🐛",
-      color: "#10B981"
-    },
-    {
-      name: "Android Development",
-      description: "Pengembangan aplikasi mobile Android",
-      icon: "🤖",
-      color: "#EF4444"
-    },
-    {
-      name: "UI/UX Design",
-      description: "Merancang antarmuka yang user-friendly",
-      icon: "🎨",
-      color: "#EC4899"
+export default function Skills() {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5, staggerChildren: 0.08 }
     }
-  ];
+  };
 
-  const firstRow = additionalExpertise.slice(0, Math.ceil(additionalExpertise.length / 2));
-  const secondRow = additionalExpertise.slice(Math.ceil(additionalExpertise.length / 2));
-
-  const ExpertiseCard = ({ name, description, icon, color }) => (
-    <figure
-      className={cn(
-        "relative w-full cursor-pointer overflow-hidden rounded-2xl p-4 mb-3",
-        "transition-all duration-300 ease-out hover:-translate-y-0.5",
-        darkMode
-          ? "bg-gray-900/80 border border-gray-700/60 hover:border-gray-500"
-          : "bg-white border border-gray-200/80 hover:border-gray-300 hover:shadow-sm",
-      )}
-    >
-      {/* Color accent bar on left */}
-      <div
-        className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full"
-        style={{ backgroundColor: color + '90' }}
-      ></div>
-
-      <div className="flex flex-row items-center gap-3 mb-2 pl-2">
-        <div
-          className="flex size-9 items-center justify-center rounded-xl shrink-0"
-          style={{ backgroundColor: color + '18' }}
-        >
-          <span className="text-base">{icon}</span>
-        </div>
-        <figcaption className={`text-sm font-semibold tracking-tight ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}>
-          {name}
-        </figcaption>
-      </div>
-      <blockquote className={`text-xs leading-relaxed pl-14 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-        {description}
-      </blockquote>
-    </figure>
-  );
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
 
   return (
-    <section id="kemampuan" className="py-20">
-
-      {/* Header */}
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold mb-3">Kemampuan Saya</h2>
-        <div className="w-16 h-1 bg-indigo-500 mx-auto mb-8"></div>
-        <p className={`max-w-2xl mx-auto text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          Saya memiliki berbagai keterampilan dalam pengembangan web,
-          mulai dari HTML/CSS, JavaScript, hingga framework modern seperti React dan Next.js.
-        </p>
-      </div>
-
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        {/* Kiri: IconCloud */}
-        <div className={`rounded-2xl p-8 flex flex-col border ${
-          darkMode
-            ? 'bg-gray-900/60 border-gray-700/60'
-            : 'bg-gray-50 border-gray-200'
-        }`}>
-          <div className="mb-4">
-            <p className={`text-xs font-semibold uppercase tracking-widest mb-1 ${
-              darkMode ? 'text-indigo-400' : 'text-indigo-500'
-            }`}>Tech Stack</p>
-            <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-              Kemampuan Teknis
-            </h3>
-          </div>
-
-          <div className="flex justify-center items-center flex-1 h-72 my-4">
-            <div className="relative flex size-full max-w-xs items-center justify-center overflow-hidden">
-              <IconCloud images={iconCloudImages} />
-            </div>
-          </div>
-
-          <p className={`text-center text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-            Hover dan drag untuk menjelajahi
+    <section id="kemampuan" className="py-12 sm:py-24 border-t border-border relative">
+      <motion.div
+        className="max-w-5xl mx-auto"
+        variants={staggerContainer(0.08, 0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+      >
+        {/* Header */}
+        <motion.div variants={fadeUpVariant} className="mb-8 sm:mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            Kemampuan Teknis
           </p>
-        </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+            Teknologi &amp; keahlian
+          </h2>
+        </motion.div>
 
-        <div className={`rounded-2xl p-8 flex flex-col border ${
-          darkMode
-            ? 'bg-gray-900/60 border-gray-700/60'
-            : 'bg-gray-50 border-gray-200'
-        }`}>
-          <div className="mb-5">
-            <p className={`text-xs font-semibold uppercase tracking-widest mb-1 ${
-              darkMode ? 'text-indigo-400' : 'text-indigo-500'
-            }`}>Soft Skills</p>
-            <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-              Keahlian Tambahan
-            </h3>
-          </div>
+        {/* Categories Grid — single column on mobile, 3 cols on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          {skillCategories.map((category) => (
+            <motion.div
+              key={category.id}
+              variants={cardVariants}
+              className="rounded-xl sm:rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-4 sm:p-6 flex flex-col justify-between shadow-sm relative overflow-hidden group"
+            >
+              {/* Subtle gradient hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-2 sm:mb-3 pb-3 sm:pb-4 border-b border-border/50">
+                  <h3 className="text-xs sm:text-sm font-bold text-foreground">
+                    {category.title}
+                  </h3>
+                  <span className="text-[10px] sm:text-xs font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded">
+                    {category.skills.length} tools
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
+                  {category.description}
+                </p>
 
-          <div className="relative overflow-hidden rounded-xl" style={{ height: '320px' }}>
-            <div className="flex flex-row h-full gap-3">
-              <div className="w-1/2 overflow-hidden">
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    animation: 'marquee 14s linear infinite'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.animationPlayState = 'paused'}
-                  onMouseLeave={(e) => e.currentTarget.style.animationPlayState = 'running'}
-                >
-                  {[...firstRow, ...firstRow].map((item, idx) => (
-                    <ExpertiseCard key={`first-${idx}`} {...item} />
+                {/* Skill List */}
+                <div className="space-y-2 sm:space-y-2.5">
+                  {category.skills.map((skill, sIdx) => (
+                    <motion.div
+                      key={sIdx}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02, backgroundColor: "hsl(var(--secondary))" }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center justify-between p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-secondary/40 border border-border/60 hover:border-foreground/30 transition-all cursor-default"
+                    >
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 relative shrink-0 grayscale group-hover:grayscale-0 transition-[filter] duration-300">
+                          <Image
+                            src={skill.icon}
+                            alt={skill.name}
+                            fill
+                            className="object-contain"
+                            sizes="20px"
+                          />
+                        </div>
+                        <span className="text-[11px] sm:text-xs font-semibold text-foreground truncate">
+                          {skill.name}
+                        </span>
+                      </div>
+                      <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground uppercase shrink-0 ml-2">
+                        {skill.level}
+                      </span>
+                    </motion.div>
                   ))}
                 </div>
               </div>
-
-              <div className="w-1/2 overflow-hidden">
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    animation: 'marquee-reverse 14s linear infinite'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.animationPlayState = 'paused'}
-                  onMouseLeave={(e) => e.currentTarget.style.animationPlayState = 'running'}
-                >
-                  {[...secondRow, ...secondRow].map((item, idx) => (
-                    <ExpertiseCard key={`second-${idx}`} {...item} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Gradient fade top & bottom */}
-            <div className={`pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b z-10 ${
-              darkMode ? 'from-gray-900/90' : 'from-gray-50'
-            }`}></div>
-            <div className={`pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t z-10 ${
-              darkMode ? 'from-gray-900/90' : 'from-gray-50'
-            }`}></div>
-          </div>
-
-          <div className={`mt-5 pt-5 border-t text-xs leading-relaxed ${
-            darkMode ? 'border-gray-700/60 text-gray-500' : 'border-gray-200 text-gray-400'
-          }`}>
-            Terbiasa bekerja dalam tim, komunikasi efektif, dan pemecahan masalah secara kreatif.
-          </div>
+            </motion.div>
+          ))}
         </div>
 
-      </div>
+        {/* Additional Competencies List */}
+        <motion.div
+          variants={fadeUpVariant}
+          className="rounded-xl sm:rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-4 sm:p-6 md:p-8"
+        >
+          <h4 className="text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 sm:mb-5 pb-2 sm:pb-3 border-b border-border/50">
+            Metodologi &amp; Standar Pengerjaan
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5">
+            {additionalExpertise.map((item, index) => (
+              <motion.div 
+                key={index} 
+                whileHover={{ y: -2 }}
+                className="p-3 sm:p-4 rounded-lg sm:rounded-xl bg-secondary/30 border border-border/50 hover:border-border transition-colors"
+              >
+                <p className="text-[11px] sm:text-xs font-bold text-foreground mb-1 sm:mb-1.5 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground/40"></span>
+                  {item.name}
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed ml-3.5">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
-};
-
-export default Skills;
+}

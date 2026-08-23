@@ -1,144 +1,171 @@
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { Moon, Sun, Menu, X, ArrowUpRight } from "lucide-react";
+import { personalInfo } from "@/data/portfolioData";
 
-const navItems = ["beranda", "tentang", "proyek", "kemampuan", "kontak"];
+const navItems = [
+  { label: "Tentang", href: "#tentang" },
+  { label: "Proyek", href: "#proyek" },
+  { label: "Kemampuan", href: "#kemampuan" },
+  { label: "Kontak", href: "#kontak" },
+];
 
-const Header = ({ darkMode, toggleDarkMode }) => {
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) setIsMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    setMounted(true);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      const menu = document.getElementById("mobile-menu");
-      const menuButton = document.getElementById("menu-button");
+    const handleScroll = () => {
+      const sections = navItems.map((item) => item.href.substring(1));
+      const scrollPos = window.scrollY + 180;
 
-      if (
-        menu &&
-        menuButton &&
-        !menu.contains(e.target) &&
-        !menuButton.contains(e.target)
-      ) {
-        setIsMenuOpen(false);
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const handleResize = () => {
+      if (window.innerWidth > 768) setIsMenuOpen(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
 
   return (
     <>
-      {/* HEADER */}
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 border-b
-        ${
-          darkMode
-            ? "bg-gray-900/90 md:bg-gray-900/70 md:backdrop-blur-xl border-gray-800"
-            : "bg-white/90 md:bg-white/70 md:backdrop-blur-xl border-gray-200"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-xl font-bold text-indigo-500 group-hover:scale-105 transition">
-              Sltnmsyffa
-            </span>
-            <span className={`${darkMode ? "text-gray-600" : "text-gray-300"}`}>
-              []
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border transition-colors">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Authentic Clean Logo */}
+          <Link
+            href="#beranda"
+            className="flex items-center gap-2 group cursor-pointer"
+          >
+            <span className="font-bold text-base sm:text-lg text-foreground tracking-tight group-hover:text-muted-foreground transition-colors">
+              {personalInfo.name}
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-2">
-            {navItems.map((item) => (
-              <Link
-                key={item}
-                href={`#${item}`}
-                scroll={false}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300
-                ${
-                  darkMode
-                    ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                    : "text-gray-600 hover:text-black hover:bg-gray-100"
-                }`}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-
-                {/* underline hover */}
-                <span className="absolute left-3 right-3 -bottom-1 h-[2px] bg-indigo-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-              </Link>
-            ))}
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm transition-colors ${
+                    isActive
+                      ? "text-foreground font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Right */}
-          <div className="flex items-center gap-2">
-            {/* Dark Mode */}
+          {/* Right Action: Theme Switcher + Contact */}
+          <div className="flex items-center gap-3">
             <button
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-xl transition-all duration-300 ${
-                darkMode
-                  ? "bg-gray-800 text-yellow-400 hover:bg-gray-700"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
+              type="button"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary border border-border/60 transition-colors"
+              aria-label="Ganti Tema"
             >
-              {darkMode ? "☀️" : "🌙"}
+              {mounted ? (
+                resolvedTheme === "dark" ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
             </button>
 
-            {/* Hamburger */}
-            <button
-              id="menu-button"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`md:hidden p-2 rounded-xl transition ${
-                darkMode
-                  ? "text-gray-400 hover:bg-gray-800"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
+            <Link
+              href="#kontak"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-foreground text-background hover:opacity-90 transition-opacity"
             >
-              {isMenuOpen ? "✖" : "☰"}
+              <span>Kontak</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden w-9 h-9 rounded-lg flex items-center justify-center text-foreground hover:bg-secondary border border-border/60 transition-colors"
+              aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </header>
 
-      {/* MOBILE MENU */}
-      <div
-        id="mobile-menu"
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
-          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
-      >
-        <div
-          className={`absolute inset-0 ${
-            darkMode ? "bg-gray-900/95" : "bg-white/95"
-          } backdrop-blur-xl`}
-        >
-          <nav className="flex flex-col items-center justify-center h-full gap-6">
+      {/* Mobile Drawer */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden bg-background/95 backdrop-blur-md flex flex-col justify-between pt-24 pb-12 px-6">
+          <nav className="flex flex-col gap-4">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-2">
+              Navigasi
+            </span>
             {navItems.map((item) => (
               <Link
-                key={item}
-                href={`#${item}`}
+                key={item.href}
+                href={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-xl font-semibold transition-all duration-300 ${
-                  darkMode
-                    ? "text-gray-300 hover:text-indigo-400"
-                    : "text-gray-700 hover:text-indigo-500"
-                }`}
+                className="text-2xl font-bold text-foreground hover:text-muted-foreground transition-colors py-2 border-b border-border/40"
               >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
+                {item.label}
               </Link>
             ))}
           </nav>
+
+          <div className="flex flex-col gap-3 pt-6 border-t border-border">
+            <p className="text-xs text-muted-foreground">{personalInfo.contact.email}</p>
+            <Link
+              href="#kontak"
+              onClick={() => setIsMenuOpen(false)}
+              className="inline-flex items-center justify-center gap-2 py-3 rounded-lg bg-foreground text-background font-semibold text-sm"
+            >
+              <span>Hubungi Sekarang</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
-};
-
-export default Header;
+}

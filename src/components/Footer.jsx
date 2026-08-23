@@ -1,109 +1,94 @@
-// src/components/Footer.jsx
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import Link from "next/link";
+import { ArrowUp, Mail, Github, Linkedin } from "lucide-react";
+import { personalInfo } from "@/data/portfolioData";
+import { motion } from "framer-motion";
+import { fadeUpVariant } from "@/lib/animations";
 
-const Footer = ({ darkMode }) => {
-  const [currentYear] = useState(new Date().getFullYear());
-  const [quoteIndex, setQuoteIndex] = useState(0);
-  
-  const quotes = [
-    "Belajar adalah investasi terbaik untuk masa depan.",
-    "Setiap baris kode adalah jejak kreativitas.",
-    "Teknologi terbaik adalah yang menyelesaikan masalah nyata.",
-    "Kesederhanaan adalah kecanggihan tertinggi.",
-    "Setiap proyek adalah kesempatan untuk belajar sesuatu yang baru."
-  ];
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setQuoteIndex((prev) => (prev + 1) % quotes.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [quotes.length]);
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  const scrollToTop = () => {
+    if (typeof window !== "undefined") {
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+  };
 
   return (
-    <footer
-      className={`py-16 ${
-        darkMode ? "border-t border-gray-800" : "border-t border-gray-200"
-      }`}
-    >
-      {/* Quote Section - Centered */}
-      <div className="flex flex-col items-center">
+    <footer className="pt-16 pb-8 border-t border-border bg-background relative overflow-hidden">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[200px] bg-foreground/5 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Decorative top line */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className={`h-px w-12 ${darkMode ? 'bg-indigo-500/40' : 'bg-indigo-400/40'}`}></div>
-          <svg className={`w-5 h-5 ${darkMode ? 'text-indigo-400' : 'text-indigo-500'}`} fill="currentColor" viewBox="0 0 24 24">
-            <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.95.78-3 .53-.81 1.24-1.48 2.13-2.01L9.24 6c-.96.56-1.82 1.29-2.58 2.19-.76.89-1.29 1.86-1.6 2.9-.31 1.04-.37 2.06-.17 3.06.19.97.67 1.83 1.44 2.57.77.74 1.7 1.11 2.8 1.11.92 0 1.67-.28 2.26-.85.59-.57.88-1.3.88-2.21zm8.56 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.95.1-1.95.78-3 .53-.81 1.24-1.48 2.13-2.01L17.8 6c-.96.56-1.82 1.29-2.58 2.19-.76.89-1.29 1.86-1.6 2.9-.31 1.04-.37 2.06-.17 3.06.19.97.67 1.83 1.44 2.57.77.74 1.7 1.11 2.8 1.11.92 0 1.67-.28 2.26-.85.59-.57.88-1.3.88-2.21z"/>
-          </svg>
-          <div className={`h-px w-12 ${darkMode ? 'bg-indigo-500/40' : 'bg-indigo-400/40'}`}></div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Top Section: CTA & Big Name */}
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 mb-12">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-foreground mb-2">
+              Tertarik bekerja sama?
+            </h2>
+            <p className="text-sm text-muted-foreground max-w-md">
+              Mari diskusikan ide, proyek, atau peluang kolaborasi. Saya selalu terbuka untuk tantangan baru dalam pengembangan teknologi.
+            </p>
+          </div>
+          <Link href="#kontak">
+            <button className="px-6 py-3 rounded-xl bg-foreground text-background font-semibold text-sm hover:opacity-90 transition-opacity">
+              Mulai Percakapan
+            </button>
+          </Link>
         </div>
 
-        {/* Quote card */}
-        <div className={`relative w-full max-w-xl rounded-2xl px-8 py-8 text-center ${
-          darkMode
-            ? 'bg-gray-800/40 border border-gray-700/60 backdrop-blur-sm'
-            : 'bg-white border border-gray-100 shadow-md'
-        }`}>
+        {/* Divider */}
+        <div className="w-full h-px bg-border/60 mb-8" />
 
-          {/* Glowing background blob */}
-          <div className={`absolute inset-0 rounded-2xl pointer-events-none overflow-hidden`}>
-            <div className={`absolute -top-6 -left-6 w-32 h-32 rounded-full blur-2xl opacity-20 ${
-              darkMode ? 'bg-indigo-500' : 'bg-indigo-300'
-            }`}></div>
-            <div className={`absolute -bottom-6 -right-6 w-32 h-32 rounded-full blur-2xl opacity-20 ${
-              darkMode ? 'bg-purple-500' : 'bg-purple-300'
-            }`}></div>
+        {/* Bottom Section: Links & Copyright */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* Copyright */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center text-background font-bold text-sm">
+              S
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-xs text-foreground tracking-tight">
+                {personalInfo.name}
+              </span>
+              <span className="text-[10px] text-muted-foreground font-mono">
+                © {currentYear} All rights reserved.
+              </span>
+            </div>
           </div>
 
-          {/* Quote text */}
-          <div className="relative overflow-hidden" style={{ minHeight: '64px' }}>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={quoteIndex}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.45, ease: 'easeInOut' }}
-                className={`text-lg italic font-medium leading-relaxed ${
-                  darkMode ? 'text-gray-200' : 'text-gray-700'
-                }`}
-              >
-                {quotes[quoteIndex]}
-              </motion.p>
-            </AnimatePresence>
+          {/* Social Links */}
+          <div className="flex items-center gap-4">
+            <a href="https://github.com/Tanmsyffa" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors" aria-label="GitHub">
+              <Github className="w-4 h-4" />
+            </a>
+            <a href="https://www.linkedin.com/in/sultan-tammam-musyaffa-8a0a79280" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors" aria-label="LinkedIn">
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a href="mailto:sultantammam3@gmail.com" className="p-2 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors" aria-label="Email">
+              <Mail className="w-4 h-4" />
+            </a>
           </div>
 
-          {/* Dot indicators */}
-          <div className="flex justify-center mt-6 gap-2">
-            {quotes.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setQuoteIndex(index)}
-                className={`rounded-full transition-all duration-300 ${
-                  index === quoteIndex
-                    ? 'w-6 h-2 bg-indigo-500'
-                    : `w-2 h-2 ${darkMode ? 'bg-gray-600 hover:bg-gray-500' : 'bg-gray-300 hover:bg-gray-400'}`
-                }`}
-                aria-label={`Go to quote ${index + 1}`}
-              />
-            ))}
-          </div>
+          {/* Back to Top */}
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Kembali ke atas
+            <span className="w-6 h-6 rounded flex items-center justify-center bg-secondary border border-border">
+              <ArrowUp className="w-3 h-3" />
+            </span>
+          </button>
         </div>
-      </div>
 
-      {/* Copyright */}
-      <div
-        className={`mt-12 pt-6 text-center text-sm ${
-          darkMode
-            ? 'border-t border-gray-800 text-gray-500'
-            : 'border-t border-gray-200 text-gray-400'
-        }`}
-      >
-        <p>© 2025 Sltnmsyffa.</p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

@@ -1,99 +1,129 @@
-// src/components/About.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { GraduationCap, Briefcase, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { personalInfo, education, experiences } from "@/data/portfolioData";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
 
-const About = ({ darkMode }) => {
+export default function About() {
   return (
-    <section id="tentang" className="py-20">
-      <div className="flex justify-center">
+    <section id="tentang" className="py-12 sm:py-24 border-t border-border">
+      <motion.div
+        className="max-w-5xl mx-auto"
+        variants={staggerContainer(0.08, 0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+      >
+        {/* Header */}
+        <motion.div variants={fadeUpVariant} className="mb-8 sm:mb-12">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            Tentang Saya
+          </p>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+            Latar belakang &amp; prinsip kerja
+          </h2>
+        </motion.div>
 
-        
-        {/* Bagian Teks */}
+        {/* Top Bio Section - Full Width */}
         <motion.div
-          className="flex flex-col items-center text-center w-full max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          variants={fadeUpVariant}
+          className="rounded-xl border border-border bg-card p-5 sm:p-8 mb-5 sm:mb-6 hover:border-foreground/20 transition-colors"
         >
-          <div className="flex flex-col items-center mb-6">
-            <h2 className="text-3xl font-bold mb-3">Tentang Saya</h2>
-            <div className="w-16 h-1 bg-indigo-500"></div>
+          <div className="max-w-3xl">
+            <h3 className="text-base sm:text-lg font-bold text-foreground mb-3 sm:mb-4">
+              Fokus pada kode yang bersih, scalable, dan fungsional.
+            </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 sm:mb-4">
+              Saya adalah mahasiswa Teknik Informatika yang mendalami pengembangan aplikasi web dan ekosistem Android. Saya percaya bahwa produk digital yang baik dibangun di atas arsitektur sistem yang solid, efisiensi database, dan antarmuka yang ramah bagi pengguna.
+            </p>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Selama perkuliahan dan eksplorasi mandiri, saya terbiasa mengerjakan proyek end-to-end — mulai dari perancangan database relasional MySQL, pembuatan REST API dengan PHP / Node.js, hingga implementasi frontend modern dengan React / Next.js dan aplikasi mobile dengan Java di Android Studio.
+            </p>
           </div>
-          
-          <motion.p 
-            className={`mb-6 text-lg ${
-              darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}
-            whileHover={{ x: 5 }}
-          >
-            Saya adalah mahasiswa jurusan Teknik Informatika yang memiliki minat besar dalam dunia pengembangan web dan android. 
-            Dengan pengalaman dalam berbagai teknologi, saya berkomitmen
-            untuk menciptakan web dan aplikasi android yang responsif dan menarik.
-          </motion.p>
-          
-          <motion.p 
-            className={`mb-8 text-lg ${
-              darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}
-            whileHover={{ x: 5 }}
-          >
-            Selain itu, saya selalu mencari peluang untuk belajar dan berbagi pengetahuan.
-            Saya percaya bahwa kolaborasi adalah kunci untuk menciptakan solusi yang 
-            inovatif dan efektif.
-          </motion.p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-            {/* Pendidikan */}
-            <motion.div 
-              className={`p-5 rounded-xl ${
-                darkMode 
-                  ? 'bg-gray-800/50 border border-gray-700' 
-                  : 'bg-white border border-gray-200 shadow-sm'
-              }`}
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-center mb-3 justify-center">
-                <div className={`w-8 h-8 rounded-full mr-3 flex items-center justify-center ${
-                  darkMode ? 'bg-indigo-900/50' : 'bg-indigo-100'
-                }`}>
-                  <svg className={`w-4 h-4 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-lg">Pendidikan</h3>
-              </div>
-              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Teknik Informatika</p>
-              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Universitas Budi Luhur</p>
-            </motion.div>
-            
-            {/* Pengalaman */}
-            <motion.div 
-              className={`p-5 rounded-xl ${
-                darkMode 
-                  ? 'bg-gray-800/50 border border-gray-700' 
-                  : 'bg-white border border-gray-200 shadow-sm'
-              }`}
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-center mb-3 justify-center">
-                <div className={`w-8 h-8 rounded-full mr-3 flex items-center justify-center ${
-                  darkMode ? 'bg-purple-900/50' : 'bg-purple-100'
-                }`}>
-                  <svg className={`w-4 h-4 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-lg">Pengalaman</h3>
-              </div>
-              <p className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Pengembangan website dan aplikasi android pada proyek kuliah</p>
-            </motion.div>
+
+          <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-border flex flex-wrap gap-2.5 sm:gap-4 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 font-medium text-foreground bg-secondary px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border text-[11px] sm:text-xs">
+              <CheckCircle className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-emerald-500" /> Clean Architecture
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-medium text-foreground bg-secondary px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border text-[11px] sm:text-xs">
+              <CheckCircle className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-emerald-500" /> Database Optimization
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-medium text-foreground bg-secondary px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border text-[11px] sm:text-xs">
+              <CheckCircle className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-emerald-500" /> Responsive UI
+            </span>
           </div>
         </motion.div>
-      </div>
+
+        {/* Bottom Cards: Education & Experiences - Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Education Card */}
+          <motion.div
+            variants={fadeUpVariant}
+            className="rounded-xl border border-border bg-card p-6 flex flex-col justify-between group hover:border-foreground/20 transition-colors"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-foreground group-hover:bg-foreground group-hover:text-background transition-colors">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <span className="text-xs font-mono text-muted-foreground bg-secondary px-2.5 py-1 rounded border border-border">
+                  {education.period}
+                </span>
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Pendidikan Formal
+              </p>
+              <h4 className="text-base font-bold text-foreground mb-1">
+                {education.degree}
+              </h4>
+              <p className="text-xs text-muted-foreground mb-3">{education.institution}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {education.description}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Experience Cards */}
+          {experiences.map((exp, idx) => (
+            <motion.div
+              key={idx}
+              variants={fadeUpVariant}
+              className="rounded-xl border border-border bg-card p-6 flex flex-col justify-between group hover:border-foreground/20 transition-colors"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-foreground group-hover:bg-foreground group-hover:text-background transition-colors">
+                    <Briefcase className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono text-muted-foreground bg-secondary px-2.5 py-1 rounded border border-border text-right max-w-[140px] truncate">
+                    {exp.period}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {idx === 0 ? "Pengalaman Magang" : "Pengalaman Proyek"}
+                  </p>
+                </div>
+                <h4 className="text-base font-bold text-foreground mb-1">
+                  {exp.title}
+                </h4>
+                <p className="text-xs text-muted-foreground mb-4">
+                  {exp.scope}
+                </p>
+                
+                <ul className="space-y-2 text-xs text-muted-foreground">
+                  {exp.highlights.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-foreground/40 select-none shrink-0 mt-0.5">•</span>
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
-};
-
-export default About;
+}
